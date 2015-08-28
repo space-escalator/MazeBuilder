@@ -1,3 +1,17 @@
+/*
+Aaron Goldfogel, August 2015
+Generates 2D mazes via an approximation of Wilson's Algorithm.
+
+Dependant on Cell.java.
+
+HORIZONTALCELLS controls the width of the maze
+VERITCALCELLS controls the height of the maze
+	These must be odd numbers for mathematical reasons.
+MILLISECONDSPERFRAME controls animation speed. 
+	Lower numbers for faster. 0 for instantaneous.
+*/
+
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,7 +27,7 @@ public class MazeBuilder {
 	Cell[][] cells;
 	public static final int HORIZONTALCELLS = 61;
 	public static final int VERTICALCELLS = 61;
-	public static final int MILLISECONDSPERFRAME = 0;
+	public static final int MILLISECONDSPERFRAME = 10;
 
 	public static void main(String[] args) {
 		MazeBuilder m = new MazeBuilder();
