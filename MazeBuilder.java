@@ -4,8 +4,8 @@ Generates 2D mazes via an approximation of Wilson's Algorithm.
 
 Dependant on Cell.java.
 
-HORIZONTALCELLS controls the width of the maze
-VERITCALCELLS controls the height of the maze
+HORIZONTALCELLS controls the width of the maze in cells
+VERITCALCELLS controls the height of the maze in cells
 	These must be odd numbers for mathematical reasons.
 MILLISECONDSPERFRAME controls animation speed. 
 	Lower numbers for faster. 0 for instantaneous.
@@ -42,7 +42,7 @@ public class MazeBuilder {
 		GPanel panel = new GPanel();
 		frame.getContentPane().add(BorderLayout.CENTER, panel);
 
-		frame.setSize(HORIZONTALCELLS * Cell.width, VERTICALCELLS * Cell.height + 22); //weird cutoff from 20ish pixel header
+		frame.setSize(HORIZONTALCELLS * Cell.WIDTH, VERTICALCELLS * Cell.HEIGHT + 22); //weird cutoff from 20ish pixel header
 		frame.setLocationByPlatform(true);
 		frame.setResizable(false);
 		frame.setVisible(true);
@@ -68,7 +68,7 @@ public class MazeBuilder {
 			for (int i = 0; i < cells.length; i++) {
 				for (int j = 0; j < cells[i].length; j++) {
 					g.setColor(cells[i][j].getColor());
-					g.fillRect(j*Cell.width, i*Cell.height, Cell.width, Cell.height);
+					g.fillRect(j*Cell.WIDTH, i*Cell.HEIGHT, Cell.WIDTH, Cell.HEIGHT);
 				}
 			}
 		}

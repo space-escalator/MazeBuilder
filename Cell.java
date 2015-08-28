@@ -1,9 +1,11 @@
+// WIDTH and HEIGHT are constants for how many pixels wide maze cells are.
+
 import java.awt.Color;
 
 
 public class Cell {
-	public static int width = 7;
-	public static int height = 7;
+	public static final int WIDTH = 7;
+	public static final int HEIGHT = 7;
 	
 	private int x;
 	private int y;
