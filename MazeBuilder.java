@@ -13,7 +13,7 @@ public class MazeBuilder {
 	Cell[][] cells;
 	public static final int HORIZONTALCELLS = 30;
 	public static final int VERTICALCELLS = 31;
-	public static final int MILLISECONDSPERFRAME = 10;
+	public static final int MILLISECONDSPERFRAME = 120;
 
 	public static void main(String[] args) {
 		MazeBuilder m = new MazeBuilder();
@@ -96,6 +96,7 @@ public class MazeBuilder {
 			moveLog.add(move);
 
 			//color steps so far red and repaint
+			//TODO make this more elegant
 			for (Cell c : trail) {
 				c.setColor(Color.RED);
 			}
@@ -153,17 +154,32 @@ public class MazeBuilder {
 				}
 				trail.subList(retrace + 1, trail.size()).clear();
 				moveLog.subList(retrace + 1, moveLog.size()).clear();
+				frame.repaint();
 			}
 
 			//look for connections and commit if found
-			if (	cells[y][x-1].getColor().equals(Color.WHITE) ||
+			if (	
+				cells[y][x-1].getColor().equals(Color.WHITE) ||
 				cells[y][x+1].getColor().equals(Color.WHITE) ||
 				cells[y-1][x].getColor().equals(Color.WHITE) ||
 				cells[y+1][x].getColor().equals(Color.WHITE)) {
-				for (Cell c : trail) c.setColor(Color.WHITE);
+				for (Cell c : trail) {
+					c.setColor(Color.WHITE);
+				}
 					frame.repaint();
-				//				System.out.println("done!");
 				return;
+			}
+
+			//look for diagonal connections to white and backtrack 1 if found
+			if (
+				cells[y-1][x-1].getColor().equals(Color.WHITE) ||
+				cells[y-1][x+1].getColor().equals(Color.WHITE) ||
+				cells[y+1][x-1].getColor().equals(Color.WHITE) ||
+				cells[y+1][x+1].getColor().equals(Color.WHITE)) {
+				trail.get(trail.size() - 1).setColor(Color.BLACK);
+				trail.remove(trail.size()-1);
+				moveLog.remove(trail.size()-1);
+			frame.repaint();
 			}
 		}
 	}
@@ -172,41 +188,33 @@ public class MazeBuilder {
 		//search bottom to top, left to right, for a black cell with two adjacent black cells
 
 		boolean firstLoop = true;
-		for (int y = cells.length-2; y > 0; y--) {
-			for (int x = 1; x < cells[y].length-2; x++) {
+		for (int y = cells.length-2; y >= 1; y--) {
+			for (int x = 1; x <= cells[y].length-2; x++) {
 				if (firstLoop) {
-					x = lastStart.getx() + 1;
+					x = lastStart.getx();
 					y = lastStart.gety();
 					firstLoop = false;
 				}
 				
 				int adjacentBlackCounter = 0;
 
-				if (cells[y][x-1].getColor().equals(Color.BLACK))// && x-1 != 0) 
-adjacentBlackCounter++;
-				if (cells[y][x+1].getColor().equals(Color.BLACK))// && x+1 != cells[0].length-1) 
-adjacentBlackCounter++;
-				if (cells[y-1][x].getColor().equals(Color.BLACK))// && y-1 != 0) 
-adjacentBlackCounter++;
-				if (cells[y+1][x].getColor().equals(Color.BLACK))// && y+1 != cells.length-1) 
-adjacentBlackCounter++;
-if (cells[y-1][x-1].getColor().equals(Color.BLACK))
-	adjacentBlackCounter++;
-if (cells[y-1][x+1].getColor().equals(Color.BLACK))
-	adjacentBlackCounter++;
-if (cells[y+1][x-1].getColor().equals(Color.BLACK))
-	adjacentBlackCounter++;
-if (cells[y+1][x+1].getColor().equals(Color.BLACK))
-	adjacentBlackCounter++;
-
-if (adjacentBlackCounter == 8) {
+				if (cells[y][x-1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y][x+1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y-1][x].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y+1][x].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y-1][x-1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y-1][x+1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y+1][x-1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				if (cells[y+1][x+1].getColor().equals(Color.BLACK)) adjacentBlackCounter++;
+				
+				if (adjacentBlackCounter == 8) {
 					// System.out.println(x + ", " + y);
-	return cells[y][x];
-}
-}
-}
-return null;
-}
+					return cells[y][x];
+				}
+			}
+		}
+		return null;
+	}
 
 	// private Cell findNextStartCell(Cell lastStart) {
 	// 	boolean firstLoop = true; //pick up where it was left off
