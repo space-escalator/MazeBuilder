@@ -2,8 +2,8 @@ import java.awt.Color;
 
 
 public class Cell {
-	public static int width = 12;
-	public static int height = 12;
+	public static int width = 7;
+	public static int height = 7;
 	
 	private int x;
 	private int y;
